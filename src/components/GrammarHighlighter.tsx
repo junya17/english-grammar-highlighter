@@ -16,6 +16,16 @@ interface CompromiseTerm {
   has: (tag: string) => boolean;
 }
 
+// compromiseのTermsオブジェクト用の型定義
+interface CompromiseTerms {
+  forEach: (callback: (term: CompromiseTerm) => void) => void;
+}
+
+// compromiseのDocumentオブジェクト用の型定義
+interface CompromiseDocument {
+  terms: () => CompromiseTerms;
+}
+
 export default function GrammarHighlighter() {
   const [text, setText] = useState<string>('');
   const [highlightedElements, setHighlightedElements] = useState<HighlightedElement[]>([]);
@@ -42,7 +52,7 @@ export default function GrammarHighlighter() {
       const results: HighlightedElement[] = [];
       
       // compromiseライブラリを使用して品詞解析
-      const doc = nlp(inputText);
+      const doc = nlp(inputText) as CompromiseDocument;
       
       // 各単語を処理
       doc.terms().forEach((term: CompromiseTerm) => {

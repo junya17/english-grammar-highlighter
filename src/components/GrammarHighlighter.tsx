@@ -26,6 +26,13 @@ interface CompromiseDocument {
   terms: () => CompromiseTerms;
 }
 
+// 型アサーション関数
+function assertIsCompromiseDocument(doc: unknown): asserts doc is CompromiseDocument {
+  if (!doc || typeof doc !== 'object' || !('terms' in doc)) {
+    throw new Error('Not a valid compromise document');
+  }
+}
+
 export default function GrammarHighlighter() {
   const [text, setText] = useState<string>('');
   const [highlightedElements, setHighlightedElements] = useState<HighlightedElement[]>([]);
@@ -52,11 +59,11 @@ export default function GrammarHighlighter() {
       const results: HighlightedElement[] = [];
       
       // compromiseライブラリを使用して品詞解析
-      const doc = nlp(inputText) as CompromiseDocument;
+      const docResult = nlp(inputText);
+      assertIsCompromiseDocument(docResult);
       
       // 各単語を処理
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      doc.terms().forEach((term: CompromiseTerm) => {
+      docResult.terms().forEach((term: CompromiseTerm) => {
         // 単語のテキストを取得
         const word = term.text();
         

@@ -10,6 +10,12 @@ interface HighlightedElement {
   color: string;
 }
 
+// compromiseのTermオブジェクト用の型定義
+interface CompromiseTerm {
+  text: () => string;
+  has: (tag: string) => boolean;
+}
+
 export default function GrammarHighlighter() {
   const [text, setText] = useState<string>('');
   const [highlightedElements, setHighlightedElements] = useState<HighlightedElement[]>([]);
@@ -39,7 +45,7 @@ export default function GrammarHighlighter() {
       const doc = nlp(inputText);
       
       // 各単語を処理
-      doc.terms().forEach((term: any) => {
+      doc.terms().forEach((term: CompromiseTerm) => {
         // 単語のテキストを取得
         const word = term.text();
         

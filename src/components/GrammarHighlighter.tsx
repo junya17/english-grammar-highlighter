@@ -55,6 +55,7 @@ export default function GrammarHighlighter() {
       const doc = nlp(inputText) as CompromiseDocument;
       
       // 各単語を処理
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       doc.terms().forEach((term: CompromiseTerm) => {
         // 単語のテキストを取得
         const word = term.text();
